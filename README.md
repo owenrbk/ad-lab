@@ -6,14 +6,18 @@ This project involves the end-to-end architecture of a localized Enterprise Infr
 
 ## Creating the Virtual Machines
 * I created two virtual machines with Microsoft Hyper-V, allocating 4GB of RAM and 80GB of virtual disk space to each. One is the domain controller (DC01) with Windows Server 2022 and the other is a client workstation (CLIENT01) with Windows 10.
+
 ![Hyper-V Setup](images/1.PNG)
+
 * I created two virtual network interfaces, one called Internal-Lab, which connects the Client to the Domain Controller, and one called Internet-Bridge, which bridges internet connectivity from the Domain Controller to the Client. By configuring this dual-homed setup, I established a secure gateway where the Domain Controller functions as a router, providing the internal lab assets (Client) with WAN access through Network Address Translation (NAT) without exposing them directly to the public internet. We configure this fully when we set up routing (RRAS).
+
 ![Network Interfaces](images/3.png)
 ![Network Interface Setup, Internal Only and External Virtual Switch](images/4.png)
 
 ## Configuration of DC01
 * When Windows Server OS finished installing, I entered "Administrator" for the username and a strong password I could remember.
-* Upon logging in, I went to Network Connections (run ncpa.cpl) and configured a static IP
+* Upon logging in, I went to Network Connections (run ncpa.cpl) and configured a static IP for the **Internal_Lab** interface.
+* I give myself the default Class B IP Address Hyper-V assigns me. I keep my default gateway the same as well, which is the Hyper-V Virtual Switch. The DNS server points back to my machine to resolve internal domain names (lab.local)
 
 ![Static IP](images/2.png)
 
