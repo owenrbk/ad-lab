@@ -2,7 +2,7 @@
 Enterprise Infrastructure Simulation of Windows Server Active Directory Domain Services, steps with images.
 
 ## Project Overview
-This lab simulates a Active Directory environment. I built a private network & configured core networking services.
+This project involves the end-to-end architecture of a localized Enterprise Infrastructure. I implemented a dual-homed Windows Server environment to simulate real-world networking, identity management via AD DS, and automated policy enforcement through Group Policy.
 
 ## Creating the Virtual Machines
 * I created two virtual machines with Microsoft Hyper-V, allocating 4GB of RAM and 80GB of virtual disk space to each. One is the domain controller (DC01) with Windows Server 2022 and the other is a client workstation (CLIENT01) with Windows 10.
@@ -78,7 +78,7 @@ This lab simulates a Active Directory environment. I built a private network & c
 * It is important to understand common responibilities and nuances of security requirements that organizations use and how Active Directory plays a huge role. Setting a domain-wide password policy shows just this.
 * In the Server Manager, I click **Tools** in the top right corner and click **Group Policy Management**.
 * Under **lab.local**, right click **Default Domain Policy** and click **Edit...**
-* In the drop down menu on the left panel as shown in the image below, we can make our way to Password Policy and set any requirements needed. In this case, I changed the maximum password age to 365 days and the minimum password length to 7 characters. I kept everything else as default.
+* In the drop down menu on the left panel as shown in the image below, we can make our way to **Password Policy** and set any requirements needed. In this case, I changed the maximum password age to 365 days and the minimum password length to 7 characters. I kept everything else as default.
 ![Password Policy](images/16.png)
 
 ## Permission Delegation
@@ -96,7 +96,7 @@ This lab simulates a Active Directory environment. I built a private network & c
 
 ## DNS Forwarding Configuration
 * Next, we need to forward a public DNS resolver through our domain controller to our client computer. This way, switching DNS from say Google to Cloudflare is centralized by changing it once on the domain controller, which forwards it.
-* In the Server Manager, I click **Tools** in the top right corner and click **DHCP**.
+* In the Server Manager, I click **Tools** in the top right corner and click **DNS**.
 * After right clicking **DC01** and selecting **Properties**, I can go to the **Forwarders** tab and add Google and Cloudflare. If one server goes down, it can default to the other.
 ![DNS Forwarding](images/20.png)
 
@@ -107,3 +107,10 @@ This lab simulates a Active Directory environment. I built a private network & c
 * I set my Internet-Bridge Interface as the public interface connected to the network, and my Internal-Lab as the private interface connected to private network.
 * In the image below we see inbound and outbound packets for each network interface
 ![NAT Interfaces](images/21.png)
+
+## Final Lab Validation
+To confirm the integrity of the full stack (Networking, Identity, and Policy), I performed a final verification from the **CLIENT01** workstation:
+* **Authentication:** Successfully authenticated as a non-admin 'Raleigh' user via RDP, confirming that the GPO and User Rights Assignments were active.
+* **Connectivity:** Successfully reached external web resources (google.com) via the DC01 NAT Gateway.
+* **Resolution:** Confirmed internal name resolution by pinging lab.local and resolving to the DC's private IP.
+![Command Validation](images/22.png)
