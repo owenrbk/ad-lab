@@ -1,13 +1,13 @@
-# ADDS & Entra ID Provisioning Lab
-Enterprise Infrastructure Simulation of Windows Server Active Directory Domain Services and Entra ID provisioning for Zendesk, steps with images.
+# Active Directory Domain Services Lab
+Enterprise Infrastructure Simulation of Windows Server Active Directory Domain Services, steps with images.
 
 ## Project Overview
-This lab simulates a Active Directory environment. I built a private network, configured core networking services, and integrated a ticketing system to handle real-world Service Desk scenarios.
+This lab simulates a Active Directory environment. I built a private network & configured core networking services.
 
 ## Creating the Virtual Machines
-* I created two virtual machines with Microsoft Hyper-V, allocating 4GB of RAM to each and 80GB of virtual disk space. One is the domain controller (DC01) with Windows Server 2022 and the other is a client workstation (CLIENT01) with Windows 10.
+* I created two virtual machines with Microsoft Hyper-V, allocating 4GB of RAM and 80GB of virtual disk space to each. One is the domain controller (DC01) with Windows Server 2022 and the other is a client workstation (CLIENT01) with Windows 10.
 ![Hyper-V Setup](images/1.png)
-* I created two virtual network interfaces, one called Internal-Lab, which connects the Client to the Domain Controller, and one called Internet-Bridge, which bridges internet connectivity from the Domain Controller to the Client. By configuring this dual-homed setup, I established a secure gateway where the Domain Controller functions as a router, providing the internal lab assets (Client) with WAN access through Network Address Translation (NAT) without exposing them directly to the public internet. We configure this fully when we set up RRAS.
+* I created two virtual network interfaces, one called Internal-Lab, which connects the Client to the Domain Controller, and one called Internet-Bridge, which bridges internet connectivity from the Domain Controller to the Client. By configuring this dual-homed setup, I established a secure gateway where the Domain Controller functions as a router, providing the internal lab assets (Client) with WAN access through Network Address Translation (NAT) without exposing them directly to the public internet. We configure this fully when we set up routing (RRAS).
 ![Network Interfaces](images/3.png)
 ![Network Interface Setup, Internal Only and External Virtual Switch](images/4.png)
 
@@ -89,10 +89,21 @@ This lab simulates a Active Directory environment. I built a private network, co
 * When first setting up the Client Computer, I used a static IP address. Outside a lab environment with many workstations, we will need DHCP to assign IP addresses.
 * In the Server Manager, I click **Tools** in the top right corner and click **DHCP**.
 * I select **IPv4** on the left panel, and in the **Actions** screen on the right, I click **New Scope...**
-* In this Wizard, I name the scope **Raleigh-Workstations** and I configure the last octet to use 150-250 as the DHCP range, allowing 101 devices for DHCP. this leaves anything outside that range for static IPs.
+* In this Wizard, I name the scope **Raleigh-Workstations** and I configure the last octet to use 150-250 as the DHCP range, allowing 101 devices for DHCP. this leaves anything outside that range for static IPs. I set the lease duration to 8 days.
 ![DHCP Scope](images/18.png)
 * In the next steps, I list my Domain Controller's private IP address as the Default Gateway and the DNS Server. Then I activate the scope now. My Client Computer can now connect with DHCP. I verify in command prompt with `ipconfig /all`, where I see DHCP is enabled.
 ![DHCP Enabled](images/19.png)
 
-## DNS 
+## DNS Forwarding Configuration
+* Next, we need to forward a public DNS resolver through our domain controller to our client computer. This way, switching DNS from say Google to Cloudflare is centralized by changing it once on the domain controller, which forwards it.
+* In the Server Manager, I click **Tools** in the top right corner and click **DHCP**.
+* After right clicking **DC01** and selecting **Properties**, I can go to the **Forwarders** tab and add Google and Cloudflare. If one server goes down, it can default to the other.
+![DNS Forwarding](images/20.png)
 
+## Router Configuration
+* Next, we will set up our domain controller as a router for our client computer.
+* In the Server Manager, I click **Tools** in the top right corner and click **Routing and Remote Access**.
+* After right clicking DC01, I select **Configure and Enable**, custom configuration, and check **NAT** and **LAN routing**
+* I set my Internet-Bridge Interface as the public interface connected to the network, and my Internal-Lab as the private interface connected to private network.
+* In the image below we see inbound and outbound packets for each network interface
+![NAT Interfaces](images/21.png)
