@@ -16,7 +16,7 @@ This project involves the end-to-end architecture of a localized Enterprise Infr
 
 ## Configuration of DC01
 * When Windows Server OS finished installing, I entered "Administrator" for the username and a strong password I could remember.
-* Upon logging in, I went to Network Connections (run ncpa.cpl) and configured a static IP for the **Internal_Lab** interface.
+* Upon logging in, I went to Network Connections (run `ncpa.cpl`) and configured a static IP for the **Internal_Lab** interface.
 * I give myself the default Class B IP Address Hyper-V assigns me. I keep my default gateway the same as well, which is the Hyper-V Virtual Switch. The DNS server points back to my machine to resolve internal domain names (lab.local)
 
 ![Static IP](images/2.png)
@@ -70,7 +70,7 @@ This project involves the end-to-end architecture of a localized Enterprise Infr
 
 ## Client Computer Domain Configuration
 * Using the CLIENT01 Workstation created in previous steps, we will first log in with a local administrator account.
-* Upon login, we will go to network connections (Windows + R, ncpa.cpl), and change the IPv4 properties of the network adapter so that the preferred DNS server is the domain controller's private IP Address. This ensures that our Active Directory Domain Names can be read by our client computer.
+* Upon login, we will go to network connections, and change the IPv4 properties of the network adapter so that the preferred DNS server is the domain controller's private IP Address. This ensures that our Active Directory Domain Names can be read by our client computer.
 * Next is to join the domain. We will need to open **Settings**, **System**, **About**, then **Rename this PC (advanced)**.
 * Here we can rename the computer to **client**, and make it a member of **lab.local**. It will prompt to restart the PC.
 
