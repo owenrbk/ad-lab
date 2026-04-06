@@ -99,7 +99,7 @@ This project involves the end-to-end architecture of a localized Enterprise Infr
 ![whoami](images/15.png)
 
 ## Setting a Password Policy
-* It is important to understand common responibilities and nuances of security requirements that organizations use and how Active Directory plays a huge role. Setting a domain-wide password policy shows just this.
+* It is important to understand common responsibilities and nuances of security requirements that organizations use and how Active Directory plays a huge role. Setting a domain-wide password policy shows just this.
 * In the Server Manager, I click **Tools** in the top right corner and click **Group Policy Management**.
 * Under **lab.local**, right click **Default Domain Policy** and click **Edit...**
 * In the drop down menu on the left panel as shown in the image below, we can make our way to **Password Policy** and set any requirements needed. In this case, I changed the maximum password age to 365 days and the minimum password length to 7 characters. I kept everything else as default.
