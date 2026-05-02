@@ -2,7 +2,7 @@
 Enterprise Infrastructure Simulation of Windows Server Active Directory Domain Services, steps with images.
 
 ## Project Overview
-This project involves the end-to-end architecture of a localized Enterprise Infrastructure. I implemented a dual-homed Windows Server environment to simulate real-world networking, identity management via AD DS, and policy enforcement through Group Policy.
+This project involves the end-to-end architecture of a localized Enterprise Infrastructure. I implemented a Windows Server and client environment to simulate real-world networking, identity management via AD DS, and policy enforcement through Group Policy.
 
 ## Creating the Virtual Machines
 * I created two virtual machines with Microsoft Hyper-V, allocating 4GB of RAM and 80GB of virtual disk space to each. One is the domain controller (DC01) with Windows Server 2022 and the other is a client workstation (CLIENT01) with Windows 10.
